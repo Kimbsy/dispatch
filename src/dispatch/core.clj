@@ -9,7 +9,6 @@
 (defn run-remote-torrent!
   [{:keys [url target]}]
   (prn "running remote-tor...")
-  (prn "magnet link:" url)
   (prn "target file:" target)
   (sh "download-magnet" url target))
 
@@ -31,7 +30,6 @@
   (when-let [body (some-> m
                           :body
                           (json/read-str :key-fn keyword))]
-    (prn body)
     (case (:action body)
       "remote-torrent"
       (run-remote-torrent! (:data body))
