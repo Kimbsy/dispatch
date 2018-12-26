@@ -48,7 +48,7 @@
   (while @running
     (let [dispatch-queue (sqs/find-queue "dispatch-queue")
           response       (sqs/receive-message :queue-url dispatch-queue
-                                              :wait-time-seconds 2
+                                              :wait-time-seconds 10
                                               :max-number-of-messages 10
                                               :delete true
                                               :atribute-names ["ALL"])]
