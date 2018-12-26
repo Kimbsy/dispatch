@@ -5,13 +5,16 @@
 
 (def running (atom true))
 
-(defn run-remote-tor!
+(defn run-remote-torrent!
   [{:keys [url target]}]
   (prn "running remote-tor...")
   (prn "magnet link:" url)
   (prn "target file:" target)
   (sh "download-magnet" url target))
 
+(defn remote-torrent-complete
+  [data]
+  (prn "completed torrenting:" (:url data)))
 
 (defn do-exit!
   []
@@ -30,7 +33,10 @@
     (prn body)
     (case (:action body)
       "remote-torrent"
-      (run-remote-tor! (:data body))
+      (run-remote-torrent! (:data body))
+
+      "remote-torrent-complete"
+      (remote-torrent-complete (:data body))
 
       "exit"
       (do-exit!)
