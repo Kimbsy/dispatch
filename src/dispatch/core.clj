@@ -1,7 +1,50 @@
 (ns dispatch.core
-  (:gen-class))
+  (:require [clojure.data.json :as json]
+            [amazonica.aws.sqs :as sqs])
+  (:use [clojure.java.shell :only [sh]]))
+
+(def running (atom true))
+
+(defn run-remote-tor!
+  [{:keys [url target]}]
+  (prn "running remote-tor...")
+  (prn "magnet link:" url)
+  (prn "target file:" target)
+  (sh "download-magnet" url target))
+
+
+(defn do-exit!
+  []
+  (prn "exiting...")
+  (reset! running false))
+
+(defn unrecognised
+  [body]
+  (prn "unrecognised action:" (:action body)))
+
+(defn process-message
+  [m]
+  (when-let [body (some-> m
+                          :body
+                          (json/read-str :key-fn keyword))]
+    (prn body)
+    (case (:action body)
+      "remote-torrent"
+      (run-remote-tor! (:data body))
+
+      "exit"
+      (do-exit!)
+
+      (unrecognised body))))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (while @running
+    (let [dispatch-queue (sqs/find-queue "dispatch-queue")
+          response       (sqs/receive-message :queue-url dispatch-queue
+                                              :wait-time-seconds 2
+                                              :max-number-of-messages 10
+                                              :delete true
+                                              :atribute-names ["ALL"])]
+      (doseq [m (:messages response)]
+        (process-message m)))))
