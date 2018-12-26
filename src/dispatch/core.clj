@@ -10,7 +10,7 @@
   (prn "running remote-tor...")
   (prn "magnet link:" url)
   (prn "target file:" target)
-  (sh "download-magnet" url target))
+  (sh "download-magnet" url target "&"))
 
 (defn remote-torrent-complete
   [data]
