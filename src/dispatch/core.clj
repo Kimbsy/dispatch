@@ -1,4 +1,5 @@
 (ns dispatch.core
+  (:gen-class)
   (:require [clojure.data.json :as json]
             [amazonica.aws.sqs :as sqs])
   (:use [clojure.java.shell :only [sh]]))
