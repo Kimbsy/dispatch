@@ -14,7 +14,7 @@
 
 (defn remote-torrent-complete
   [data]
-  (prn "completed torrenting:" (:url data)))
+  (prn "completed torrenting:" (:target data)))
 
 (defn do-exit!
   []
