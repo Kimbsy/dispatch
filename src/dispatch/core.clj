@@ -35,9 +35,6 @@
 
 (defn -main
   [& args]
-
-  (prn (System/getenv "DISPATCH_NOTIFY_EMAIL_ARN"))
-
   (while @running
     (let [dispatch-queue (sqs/find-queue "dispatch-queue.fifo")
           response       (sqs/receive-message :queue-url dispatch-queue
