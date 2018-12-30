@@ -3,6 +3,7 @@
 
 (defn notify-email
   [subject message]
+  (prn "sending notification...")
   (sns/publish :topic-arn (System/getenv "DISPATCH_NOTIFY_EMAIL_ARN")
                :subject subject
                :message message))

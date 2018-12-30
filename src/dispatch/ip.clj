@@ -5,6 +5,7 @@
 
 (defn get-ip!
   []
+  (prn "IP address requested")
   (let [external-ip (-> @(http/get "http://checkip.amazonaws.com")
                         :body
                         slurp)]
