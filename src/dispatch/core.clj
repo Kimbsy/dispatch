@@ -2,8 +2,9 @@
   (:gen-class)
   (:require [amazonica.aws.sqs :as sqs]
             [clojure.data.json :as json]
-            [dispatch.remote-tor :as rt]
-            [dispatch.ip :as ip]))
+            [dispatch.ip :as ip]
+            [dispatch.notify :as n]
+            [dispatch.remote-tor :as rt]))
 
 (def running (atom true))
 
@@ -27,6 +28,12 @@
 
       "get-ip"
       (ip/get-ip!)
+
+      "test-sms"
+      (n/notify-sms "dispatch test sms" "This is a test sms")
+
+      "test-email"
+      (n/notify-email "dispatch test sms" "This is a test email")
 
       "exit"
       (do-exit!)
