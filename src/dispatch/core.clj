@@ -33,7 +33,7 @@
       (n/notify-sms "dispatch test sms" "This is a test sms")
 
       "test-email"
-      (n/notify-email "dispatch test sms" "This is a test email")
+      (n/notify-email "dispatch test email" "This is a test email")
 
       "exit"
       (do-exit!)
